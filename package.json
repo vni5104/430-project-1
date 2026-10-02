@@ -1,0 +1,26 @@
+{
+  "name": "430-project-1",
+  "version": "1.0.0",
+  "description": "IGME-430 Web API utilizing books dataset",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vni5104/430-project-1.git"
+  },
+  "author": "Vicky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vni5104/430-project-1/issues"
+  },
+  "homepage": "https://github.com/vni5104/430-project-1#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
+    "globals": "^17.13.0"
+  }
+}
