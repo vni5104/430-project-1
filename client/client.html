@@ -2,10 +2,89 @@
 <html lang="en">
 <head>
     <title>Books Web API</title>
+
+    <script>
+        const handleResponse = (response) => {
+        }
+
+        const sendGetBook = async (getBookForm) => {
+            let url = getBookForm.getAttribute('action');
+            const method = getBookForm.querySelector('#methodSelect').value;
+
+            const title = getBookForm.querySelector('#titleField').value;
+            if (title) {
+                url += `?title=${title}`;
+            }
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    Accept: 'application/json'
+                }
+            });
+        };
+
+        const sendAddBook = (addBookForm) => {
+            //
+        };
+
+        const init = () => {
+            const getBookForm = document.querySelector('#getBookForm');
+            getBookForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                sendGetBook(getBookForm);
+                return false;
+            });
+
+            const addBookForm = document.querySelector('#addBookForm');
+            addBookForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                sendAddBook(addBookForm);
+                return false;
+            });
+        };
+
+        window.onload = init;
+    </script>
 </head>
 <body>
-    <form>
-        
+    <h1>Books Web API</h1>
+
+    <!-- GET/HEAD Endpoints -->
+    <h2>Get Book</h2>
+    <form id="getBookForm" action="/getBook">
+        <label for="title">Title </label>
+        <input id="titleField" type="text" name="title">
+        <select id="methodSelect">
+            <option value="get">GET</option>
+            <option value="head">HEAD</option>
+        </select>
+        <input type="submit" />
+    </form>
+    <form action="/getBooks"></form>
+    <form></form>
+    <form action="/getAuthors"></form>
+
+    <!-- POST Endpoints -->
+    <h2>Add Book</h2>
+    <form id="addBookForm" action="/addBook">
+        <label for="author">Author </label>
+        <input id="authorField" type="text" name="author">
+        <label for="country">Country </label>
+        <input id="countryField" type="text" name="country">
+        <label for="language">Language </label>
+        <input id="languageField" type="text" name="language">
+        <label for="link">Link </label>
+        <input id="linkField" type="url" name="link">
+        <label for="pages">Pages </label>
+        <input id="pageField" type="number" name="pages">
+        <label for="title">Title </label>
+        <input id="titleField" type="text" name="title">
+        <label for="year">Year Published </label>
+        <input id="yearField" type="number" max=2026 name="year">
+        <label for="genres">Genres </label>
+        <input id="genresField" type="text" name="genres">
+        <input type="submit">
     </form>
 </body>
 </html>

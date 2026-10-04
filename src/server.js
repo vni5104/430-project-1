@@ -1,10 +1,13 @@
 const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
+const responseHandler = require('./responses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
-    '/': htmlHandler.getIndex
+    '/': htmlHandler.getIndex,
+    '/getBook': responseHandler.getBook,
+    default: responseHandler.notFound
 };
 
 const onRequest = (request, response) => {
@@ -16,7 +19,7 @@ const onRequest = (request, response) => {
     if (handler) {
         handler(request, response);
     } else {
-        htmlHandler.getIndex(request, response);
+        urlStruct.default(request, response);
     }
 }
 
