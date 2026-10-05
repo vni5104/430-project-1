@@ -24,18 +24,18 @@ const parseRequest = (request, param) => {
 
 const getBook = (request, response) => {
     const title = parseRequest(request, 'title');
-    console.log(title);
+    //console.log(title);
 
     //Return Bad Request error if missing title param
     if (!title) {
         return respond(request, response, 400, {message: 'Missing title param', id: 'missingParams'});
     }
 
-    const responseJSON = dataSet.filter(book => book.title === title);
-    //console.log(responseJSON);
+    const books = dataSet.filter(book => book.title === title);
+    const responseJSON = {books};
 
     //Return Not Found error if no book is found
-    if (responseJSON.length === 0) {
+    if (books.length === 0) {
         return respond(request, response, 404, {message: 'There are no books with this title', id: 'notFound'});
     }
 

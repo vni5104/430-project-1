@@ -4,7 +4,42 @@
     <title>Books Web API</title>
 
     <script>
-        const handleResponse = (response) => {
+        const handleResponse = async (response, method) => {
+            const content = document.querySelector('#content');
+
+            switch (response.status) {
+                case 200:
+                    content.innerHTML = `<b>Success</b>`;
+                    break;
+                case 201:
+                    content.innerHTML = `<b>Created</b>`;
+                    break;
+                case 204:
+                    content.innerHTML = `<b>Updated (No Content)</b>`;
+                    break;
+                case 400:
+                    content.innerHTML = `<b>Bad Request</b>`;
+                    break;
+                case 404:
+                    content.innerHTML = `<b>Resource Not Found</b>`;
+                    break;
+                default:
+                    content.innerHTML = `<b>Error code not implemented by client</b>`;
+                    break;
+            }
+
+            if (method != 'head') {
+                const obj = await response.json();
+
+                if (obj.message) {
+                    content.innerHTML += `<p>${obj.message}</p>`;
+                }
+                if (obj.books) {
+                    for (let i = 0; i < obj.books.length; i++) {
+                        content.innerHTML += `<p>${JSON.stringify(obj.books[i])}</p>`;
+                    }
+                }
+            }
         }
 
         const sendGetBook = async (getBookForm) => {
@@ -22,6 +57,8 @@
                     Accept: 'application/json'
                 }
             });
+
+            handleResponse(response, method);
         };
 
         const sendAddBook = async (addBookForm) => {
@@ -64,6 +101,8 @@
                 },
                 body: data
             });
+
+            handleResponse(response, method);
         };
 
         const init = () => {
@@ -99,7 +138,12 @@
         </select>
         <input type="submit" />
     </form>
-    <form action="/getBooks"></form>
+    <form id="getBooksForm" action="/getBooks">
+        <label for="author">Title </label>
+        <input id="authorField" type="text" name="author">
+        <label for="genres">Title </label>
+        <input id="genresField" type="text" name="genres">
+    </form>
     <form></form>
     <form action="/getAuthors"></form>
 
