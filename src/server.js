@@ -9,7 +9,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 const urlStruct = {
     '/': htmlHandler.getIndex,
     '/getBook': responseHandler.getBook,
-    //'/getBooks': responseHandler.getBooks,
+    '/getBooks': responseHandler.getBooks,
     default: responseHandler.notFound
 };
 
@@ -66,4 +66,3 @@ const onRequest = (request, response) => {
 http.createServer(onRequest).listen(port, () => {
     console.log(`Listening on 127.0.0.1:${port}`);
 })
-//adding comment to make commit

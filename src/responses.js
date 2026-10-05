@@ -47,18 +47,35 @@ const getBooks = (request, response) => {
     const author = parseRequest(request, 'author');
     const genre = parseRequest(request, 'genre');
 
+    //Return Bad Request error if missing both author and genre params
     if (!author && !genre) {
         return respond(request, response, 400, {message: 'Missing author and genre param', id: 'missingParams'});
     }
 
     let books;
-    if (author) {
+    if (author && genre) {
+        books = dataSet.filter(book => {
+            if (book.genres) {
+                return book.author === author && book.genres.includes(genre);
+            }
+            return false;
+        })
+    } else if (author) {
         books = dataSet.filter(book => book.author === author);
+    } else if (genre) {
+        books = dataSet.filter(book => {
+            if (book.genres) {
+                return book.genres.includes(genre);
+            }
+            return false;
+        })
     }
-    if (genre) {
-        //books = dataSet.filter(book => book.genres?.includes(genre));
+
+    //Return Not Found error if books are found with given params
+    if (books.length === 0) {
+        return respond(request, response, 404, {message: 'There are no books with this author and/or genre', id: 'notFound'});
     }
-    console.log(dataSet[0].genres.includes('Historical Fiction'));
+
     const responseJSON = {books};
     respond(request, response, 200, responseJSON);
 }
@@ -84,8 +101,6 @@ const addBook = (request, response) => {
     for (let i = 0; i < dataSet.length; i++) {
         if (dataSet[i].title === newData.title && dataSet[i].author === newData.author) {
             dataSet[i] = newData;
-            //console.log(dataSet[i]);
-            //console.log(dataSet.length);
 
             return respond(request, response, 204, {});
         }
@@ -94,8 +109,6 @@ const addBook = (request, response) => {
     //Return 201 Created if book title and author didn't already exist
     dataSet.push(newData);
     responseJSON.message = 'Book successfully added';
-    //console.log(dataSet[dataSet.length-1]);
-    //console.log(dataSet.length);
     respond(request, response, 201, responseJSON);
 }
 

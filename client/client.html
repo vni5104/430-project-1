@@ -61,30 +61,30 @@
             handleResponse(response, method);
         };
 
-        // const sendGetBooks = async (getBooksForm) => {
-        //     let url = getBooksForm.getAttribute('action');
-        //     const method = getBooksForm.querySelector('#methodSelect').value;
+        const sendGetBooks = async (getBooksForm) => {
+            let url = getBooksForm.getAttribute('action');
+            const method = getBooksForm.querySelector('#methodSelect').value;
 
-        //     const author = getBooksForm.querySelector('#authorField').value;
-        //     const genre = getBooksForm.querySelector('#genreField').value;
+            const author = getBooksForm.querySelector('#authorField').value;
+            const genre = getBooksForm.querySelector('#genreField').value;
 
-        //     if (author && genre) {
-        //         url += `?author=${author}&genres=${genre}`;
-        //     } else if (author) {
-        //         url += `?author=${author}`;
-        //     } else if (genre) {
-        //         url += `?genre=${genre}`;
-        //     }
+            if (author && genre) {
+                url += `?author=${author}&genres=${genre}`;
+            } else if (author) {
+                url += `?author=${author}`;
+            } else if (genre) {
+                url += `?genre=${genre}`;
+            }
 
-        //     const response = await fetch (url, {
-        //         method: method,
-        //         headers: {
-        //             Accept: 'application/json'
-        //         }
-        //     });
+            const response = await fetch (url, {
+                method: method,
+                headers: {
+                    Accept: 'application/json'
+                }
+            });
 
-        //     handleResponse(response, method);
-        // }
+            handleResponse(response, method);
+        }
 
         const sendAddBook = async (addBookForm) => {
             const url = addBookForm.getAttribute('action');
@@ -138,12 +138,12 @@
                 return false;
             });
 
-            // const getBooksForm = document.querySelector('#getBooksForm');
-            // getBooksForm.addEventListener('submit', (e) => {
-            //     e.preventDefault();
-            //     sendGetBooks(getBooksForm);
-            //     return false;
-            // })
+            const getBooksForm = document.querySelector('#getBooksForm');
+            getBooksForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                sendGetBooks(getBooksForm);
+                return false;
+            });
 
             const addBookForm = document.querySelector('#addBookForm');
             addBookForm.addEventListener('submit', (e) => {
