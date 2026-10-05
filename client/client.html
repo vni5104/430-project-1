@@ -24,8 +24,46 @@
             });
         };
 
-        const sendAddBook = (addBookForm) => {
-            //
+        const sendAddBook = async (addBookForm) => {
+            const url = addBookForm.getAttribute('action');
+            const method = addBookForm.getAttribute('method');
+            const type = addBookForm.querySelector('#dataTypeField').value;
+
+            const author = addBookForm.querySelector('#authorField').value;
+            const country = addBookForm.querySelector('#countryField').value;
+            const language = addBookForm.querySelector('#languageField').value;
+            const link = addBookForm.querySelector('#linkField').value;
+            const pages = addBookForm.querySelector('#pageField').value;
+            const title = addBookForm.querySelector('#titleField').value;
+            const year = addBookForm.querySelector('#yearField').value;
+            const genreValues = addBookForm.querySelector('#genresField').value;
+
+            const genres = genreValues.split(',');
+
+            let data = `author=${author}&country=${country}&language=${language}` + 
+            `&link=${link}&pages=${pages}&title=${title}&year=${year}&genres=${genres}`;
+
+            if (type === 'application/json') {
+                data = JSON.stringify({
+                    author: author,
+                    country: country,
+                    language: language,
+                    link: link,
+                    pages: pages,
+                    title: title,
+                    year: year,
+                    genres: genres
+                });
+            }
+
+            const response = await fetch (url, {
+                method,
+                headers: {
+                    'Content-Type': type,
+                    Accept: 'application/json'
+                },
+                body: data
+            });
         };
 
         const init = () => {
@@ -67,7 +105,7 @@
 
     <!-- POST Endpoints -->
     <h2>Add Book</h2>
-    <form id="addBookForm" action="/addBook">
+    <form id="addBookForm" action="/addBook" method="post">
         <label for="author">Author </label>
         <input id="authorField" type="text" name="author">
         <label for="country">Country </label>
@@ -84,7 +122,13 @@
         <input id="yearField" type="number" max=2026 name="year">
         <label for="genres">Genres </label>
         <input id="genresField" type="text" name="genres">
+        <select id="dataTypeField">
+            <option value="application/json">JSON</option>
+            <option value="application/x-www-form-urlencoded">URL Encoded</option>
+        </select>
         <input type="submit">
     </form>
+
+    <section id="content"></section>
 </body>
 </html>
