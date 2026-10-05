@@ -61,6 +61,31 @@
             handleResponse(response, method);
         };
 
+        const sendGetBooks = async (getBooksForm) => {
+            let url = getBooksForm.getAttribute('action');
+            const method = getBooksForm.querySelector('#methodSelect').value;
+
+            const author = getBooksForm.querySelector('#authorField').value;
+            const genre = getBooksForm.querySelector('#genreField').value;
+
+            if (author && genre) {
+                url += `?author=${author}&genres=${genre}`;
+            } else if (author) {
+                url += `?author=${author}`;
+            } else if (genre) {
+                url += `?genre=${genre}`;
+            }
+
+            const response = await fetch (url, {
+                method: method,
+                headers: {
+                    Accept: 'application/json'
+                }
+            });
+
+            handleResponse(response, method);
+        }
+
         const sendAddBook = async (addBookForm) => {
             const url = addBookForm.getAttribute('action');
             const method = addBookForm.getAttribute('method');
@@ -113,6 +138,13 @@
                 return false;
             });
 
+            const getBooksForm = document.querySelector('#getBooksForm');
+            getBooksForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                sendGetBooks(getBooksForm);
+                return false;
+            })
+
             const addBookForm = document.querySelector('#addBookForm');
             addBookForm.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -138,11 +170,18 @@
         </select>
         <input type="submit" />
     </form>
+
+    <h2>Get Books</h2>
     <form id="getBooksForm" action="/getBooks">
-        <label for="author">Title </label>
+        <label for="author">Author </label>
         <input id="authorField" type="text" name="author">
-        <label for="genres">Title </label>
-        <input id="genresField" type="text" name="genres">
+        <label for="genre">Genre </label>
+        <input id="genreField" type="text" name="genre">
+        <select id="methodSelect">
+            <option value="get">GET</option>
+            <option value="head">HEAD</option>
+        </select>
+        <input type="submit" />
     </form>
     <form></form>
     <form action="/getAuthors"></form>
@@ -170,7 +209,7 @@
             <option value="application/json">JSON</option>
             <option value="application/x-www-form-urlencoded">URL Encoded</option>
         </select>
-        <input type="submit">
+        <input type="submit" />
     </form>
 
     <section id="content"></section>

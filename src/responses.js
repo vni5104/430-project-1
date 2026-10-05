@@ -32,6 +32,7 @@ const getBook = (request, response) => {
     }
 
     const books = dataSet.filter(book => book.title === title);
+    console.log(typeof(books));
     const responseJSON = {books};
 
     //Return Not Found error if no book is found
@@ -41,6 +42,26 @@ const getBook = (request, response) => {
 
     respond(request, response, 200, responseJSON);
 };
+
+const getBooks = (request, response) => {
+    const author = parseRequest(request, 'author');
+    const genre = parseRequest(request, 'genre');
+
+    if (!author && !genre) {
+        return respond(request, response, 400, {message: 'Missing author and genre param', id: 'missingParams'});
+    }
+
+    let books;
+    if (author) {
+        books = dataSet.filter(book => book.author === author);
+    }
+    if (genre) {
+        //books = dataSet.filter(book => book.genres?.includes(genre));
+    }
+    console.log(dataSet[0].genres.includes('Historical Fiction'));
+    const responseJSON = {books};
+    respond(request, response, 200, responseJSON);
+}
 
 const addBook = (request, response) => {
     const responseJSON = {
@@ -82,6 +103,7 @@ const notFound = (request, response) => respond(request, response, 404, {message
 
 module.exports = {
     getBook,
+    getBooks,
     addBook,
     notFound,
 };
