@@ -112,11 +112,43 @@ const addBook = (request, response) => {
     respond(request, response, 201, responseJSON);
 }
 
+const reviewBook = (request, response) => {
+    const responseJSON = {
+        message: 'Missing required author and title params'
+    };
+
+    const {author, title, review} = request.body;
+
+    if (!title || !author) {
+        responseJSON.id = 'missingParams';
+        return respond(request, response, 400, responseJSON);
+    }
+
+    if (!review) {
+        responseJSON.message = 'Missing review for book';
+        responseJSON.id = 'missingParams';
+        return respond(request, response, 400, responseJSON);
+    }
+
+    for (let i = 0; i < dataSet.length; i++) {
+        if (dataSet[i].title === title && dataSet[i].author === author) {
+            dataSet[i].review = review;
+            responseJSON.message = 'Book review successfully added';
+            return respond(request, response, 204, responseJSON);
+        }
+    }
+
+    responseJSON.message = 'There is no book with the corresponding title and author';
+    responseJSON.id = 'notFound';
+    respond(request, response, 404, responseJSON);
+};
+
 const notFound = (request, response) => respond(request, response, 404, {message: "The resource you are looking for is not found", id: 'notFound'});
 
 module.exports = {
     getBook,
     getBooks,
     addBook,
+    reviewBook,
     notFound,
 };

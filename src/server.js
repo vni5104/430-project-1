@@ -10,6 +10,8 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/getBook': responseHandler.getBook,
     '/getBooks': responseHandler.getBooks,
+    '/addBook': responseHandler.addBook,
+    '/reviewBook': responseHandler.reviewBook,
     default: responseHandler.notFound
 };
 
@@ -50,16 +52,14 @@ const onRequest = (request, response) => {
 
     const handler = urlStruct[parsedUrl.pathname];
 
-    if (request.method === 'POST') {
-        if (parsedUrl.pathname === '/addBook') {
-            parseBody(request, response, responseHandler.addBook);
+    if (handler) {
+        if (request.method === 'POST') {
+            parseBody(request, response, handler);
+        } else { //assume GET by default
+            handler(request, response);
         }
     } else {
-        if (handler) {
-            handler(request, response);
-        } else {
-            urlStruct.default(request, response);
-        }
+        urlStruct.default(request, response);
     }
 }
 
