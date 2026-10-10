@@ -10,6 +10,8 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/getBook': responseHandler.getBook,
     '/getBooks': responseHandler.getBooks,
+    '/getAllBooks': responseHandler.getAllBooks,
+    '/getAuthors': responseHandler.getAuthors,
     '/addBook': responseHandler.addBook,
     '/reviewBook': responseHandler.reviewBook,
     default: responseHandler.notFound

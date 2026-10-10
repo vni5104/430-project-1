@@ -105,7 +105,7 @@
                 url += `?language=${language}`;
             }
 
-            const response = await fetch(url, {
+            const response = await fetch (url, {
                 method,
                 headers: {
                     Accept: 'application/json'
@@ -276,6 +276,10 @@
         <input id="countryField" name="country">
         <label for="language">Language </label>
         <input id="languageField" name="language">
+        <select id="methodSelect">
+            <option value="get">GET</option>
+            <option value="head">HEAD</option>
+        </select>
         <input type="submit" />
     </form>
 

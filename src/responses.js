@@ -80,6 +80,48 @@ const getBooks = (request, response) => {
     respond(request, response, 200, responseJSON);
 }
 
+const getAllBooks = (request, response) => {};
+
+const getAuthors = (request, response) => {
+    const country = parseRequest(request, 'country');
+    const language = parseRequest(request, 'language');
+
+    if (!country && !language) {
+        return respond(request, response, 400, {message: 'Missing country and language params', id: 'missingParams'});
+    }
+
+    let books;
+    if (country && language) {
+        books = dataSet.filter(book => {
+            if (book.country && book.language) {
+                return book.country === country && book.language === language
+            }
+            return false;
+        });
+    } else if (country) {
+        books = dataSet.filter(book => {
+            if (book.country) {
+                return book.country === country;
+            }
+            return false;
+        });
+    } else if (language) {
+        books = dataSet.filter(book => {
+            if (book.language) {
+                return book.language === language;
+            }
+            return false;
+        });
+    }
+
+    if (books.length === 0) {
+        return respond(request, response, 404, {message: 'No authors found', id: 'notFound'});
+    }
+
+    const responseJSON = {books};
+    respond(request, response, 200, responseJSON);
+};
+
 const addBook = (request, response) => {
     const responseJSON = {
         message: 'Missing required author and title params'
@@ -148,6 +190,8 @@ const notFound = (request, response) => respond(request, response, 404, {message
 module.exports = {
     getBook,
     getBooks,
+    getAllBooks,
+    getAuthors,
     addBook,
     reviewBook,
     notFound,
