@@ -80,7 +80,15 @@ const getBooks = (request, response) => {
     respond(request, response, 200, responseJSON);
 }
 
-const getAllBooks = (request, response) => {};
+const getAllBooks = (request, response) => {
+    if (dataSet.length === 0) {
+        return respond(request, response, 404, {message: 'There are no books in this API', id: 'notFound'});
+    }
+
+    const books = dataSet;
+    const responseJSON = {books};
+    respond(request, response, 200, responseJSON);
+};
 
 const getAuthors = (request, response) => {
     const country = parseRequest(request, 'country');

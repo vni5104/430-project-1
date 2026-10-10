@@ -87,7 +87,17 @@
         }
 
         const sendGetAllBooks = async (getAllBooksForms) => {
-            //
+            const url = getAllBooksForms.getAttribute('action');
+            const method = getAllBooksForms.querySelector('#methodSelect').value;
+
+            const response = await fetch (url, {
+                method,
+                headers: {
+                    Accept: 'application/json'
+                }
+            });
+
+            handleResponse(response, method);
         }
 
         const sendGetAuthors = async (getAuthorsForm) => {
