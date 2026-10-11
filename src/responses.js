@@ -24,7 +24,6 @@ const parseRequest = (request, param) => {
 
 const getBook = (request, response) => {
     const title = parseRequest(request, 'title');
-    //console.log(title);
 
     //Return Bad Request error if missing title param
     if (!title) {
@@ -32,7 +31,6 @@ const getBook = (request, response) => {
     }
 
     const books = dataSet.filter(book => book.title === title);
-    console.log(typeof(books));
     const responseJSON = {books};
 
     //Return Not Found error if no book is found
@@ -40,6 +38,7 @@ const getBook = (request, response) => {
         return respond(request, response, 404, {message: 'There are no books with this title', id: 'notFound'});
     }
 
+    //Return Success if corresponding book is found
     respond(request, response, 200, responseJSON);
 };
 
@@ -76,15 +75,18 @@ const getBooks = (request, response) => {
         return respond(request, response, 404, {message: 'There are no books with this author and/or genre', id: 'notFound'});
     }
 
+    //Return Success if there are corresponding books
     const responseJSON = {books};
     respond(request, response, 200, responseJSON);
 }
 
 const getAllBooks = (request, response) => {
+    //Return Not Found error if no books are found (unlikely)
     if (dataSet.length === 0) {
         return respond(request, response, 404, {message: 'There are no books in this API', id: 'notFound'});
     }
 
+    //Return success if there are books found
     const books = dataSet;
     const responseJSON = {books};
     respond(request, response, 200, responseJSON);
@@ -94,6 +96,7 @@ const getAuthors = (request, response) => {
     const country = parseRequest(request, 'country');
     const language = parseRequest(request, 'language');
 
+    //Return Bad Request error if missing both country and language field
     if (!country && !language) {
         return respond(request, response, 400, {message: 'Missing country and language params', id: 'missingParams'});
     }
@@ -122,10 +125,12 @@ const getAuthors = (request, response) => {
         });
     }
 
+    //Return Not Found error if no authors were found
     if (books.length === 0) {
         return respond(request, response, 404, {message: 'No authors found', id: 'notFound'});
     }
 
+    //Return Success if there are author(s) found
     const responseJSON = {books};
     respond(request, response, 200, responseJSON);
 };
@@ -169,17 +174,21 @@ const reviewBook = (request, response) => {
 
     const {author, title, review} = request.body;
 
+    //Return Bad Request error if missing both title or author param
     if (!title || !author) {
         responseJSON.id = 'missingParams';
         return respond(request, response, 400, responseJSON);
     }
 
+    //Return Bad Request error if there is no review written
     if (!review) {
         responseJSON.message = 'Missing review for book';
         responseJSON.id = 'missingParams';
         return respond(request, response, 400, responseJSON);
     }
 
+    //Return 204 Updated if a book with title and author is found
+    //Updates corresponding book object with an added review property
     for (let i = 0; i < dataSet.length; i++) {
         if (dataSet[i].title === title && dataSet[i].author === author) {
             dataSet[i].review = review;
@@ -188,6 +197,7 @@ const reviewBook = (request, response) => {
         }
     }
 
+    //Return Not Found error if there isn't a book with title and author
     responseJSON.message = 'There is no book with the corresponding title and author';
     responseJSON.id = 'notFound';
     respond(request, response, 404, responseJSON);

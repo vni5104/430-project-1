@@ -196,48 +196,30 @@
             handleResponse(response, method);
         }
 
+        const onFormSubmit = (e, sendRequest, form) => {
+            e.preventDefault();
+            sendRequest(form);
+            return false;
+        };
+
         const init = () => {
             const getBookForm = document.querySelector('#getBookForm');
-            getBookForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendGetBook(getBookForm);
-                return false;
-            });
+            getBookForm.addEventListener('submit', (e) => onFormSubmit(e, sendGetBook, getBookForm));
 
             const getBooksForm = document.querySelector('#getBooksForm');
-            getBooksForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendGetBooks(getBooksForm);
-                return false;
-            });
+            getBooksForm.addEventListener('submit', (e) => onFormSubmit(e, sendGetBooks, getBooksForm));
 
             const getAllBooksForms = document.querySelector('#getAllBooksForm');
-            getAllBooksForms.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendGetAllBooks(getAllBooksForms);
-                return false;
-            });
+            getAllBooksForms.addEventListener('submit', (e) => onFormSubmit(e, sendGetAllBooks, getAllBooksForms));
 
             const getAuthorsForm = document.querySelector('#getAuthorsForm');
-            getAuthorsForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendGetAuthors(getAuthorsForm);
-                return false;
-            });
+            getAuthorsForm.addEventListener('submit', (e) => onFormSubmit(e, sendGetAuthors, getAuthorsForm));
 
             const addBookForm = document.querySelector('#addBookForm');
-            addBookForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendAddBook(addBookForm);
-                return false;
-            });
+            addBookForm.addEventListener('submit', (e) => onFormSubmit(e, sendAddBook, addBookForm));
 
             const reviewBookForm = document.querySelector('#reviewBookForm');
-            reviewBookForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                sendReviewBook(reviewBookForm);
-                return false;
-            });
+            reviewBookForm.addEventListener('submit', (e) => onFormSubmit(e, sendReviewBook, reviewBookForm));
         };
 
         window.onload = init;
