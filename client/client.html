@@ -39,6 +39,9 @@
                         content.innerHTML += `<p>${JSON.stringify(obj.books[i])}</p>`;
                     }
                 }
+                if (obj.authors) {
+                    content.innerHTML += `<p>${JSON.stringify(obj.authors)}</p>`
+                }
             }
         }
 

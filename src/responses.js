@@ -1,3 +1,4 @@
+//Store imported data from books.json
 const dataSet = require('../data/books.json');
 
 const respond = (request, response, status, object) => {
@@ -22,6 +23,7 @@ const parseRequest = (request, param) => {
     return url.searchParams.get(param);
 };
 
+//GET: Get Book Endpoint
 const getBook = (request, response) => {
     const title = parseRequest(request, 'title');
 
@@ -42,6 +44,7 @@ const getBook = (request, response) => {
     respond(request, response, 200, responseJSON);
 };
 
+//GET: Get Books Endpoint
 const getBooks = (request, response) => {
     const author = parseRequest(request, 'author');
     const genre = parseRequest(request, 'genre');
@@ -80,6 +83,7 @@ const getBooks = (request, response) => {
     respond(request, response, 200, responseJSON);
 }
 
+//GET: Get All Books Endpoint
 const getAllBooks = (request, response) => {
     //Return Not Found error if no books are found (unlikely)
     if (dataSet.length === 0) {
@@ -92,6 +96,7 @@ const getAllBooks = (request, response) => {
     respond(request, response, 200, responseJSON);
 };
 
+//GET: Get Authors Endpoints
 const getAuthors = (request, response) => {
     const country = parseRequest(request, 'country');
     const language = parseRequest(request, 'language');
@@ -130,11 +135,20 @@ const getAuthors = (request, response) => {
         return respond(request, response, 404, {message: 'No authors found', id: 'notFound'});
     }
 
+    const authors = [];
+    for (let i = 0; i < books.length; i++) {
+        if (!authors.includes(books[i].author)) {
+            authors.push(books[i].author);
+        }
+    }
+
+
     //Return Success if there are author(s) found
-    const responseJSON = {books};
+    const responseJSON = {authors: authors};
     respond(request, response, 200, responseJSON);
 };
 
+//POST: Add Book Endpoint
 const addBook = (request, response) => {
     const responseJSON = {
         message: 'Missing required author and title params'
@@ -149,8 +163,7 @@ const addBook = (request, response) => {
     }
 
     const newData = {author: author, country: country, language: language, link: link, pages: pages,
-        title: title, year: year, genres: genres
-    };
+        title: title, year: year, genres: genres};
 
     //Return 204 Updated if book title and author already exists
     for (let i = 0; i < dataSet.length; i++) {
@@ -167,6 +180,7 @@ const addBook = (request, response) => {
     respond(request, response, 201, responseJSON);
 }
 
+//POST: Review Book Endpoint
 const reviewBook = (request, response) => {
     const responseJSON = {
         message: 'Missing required author and title params'
