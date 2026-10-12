@@ -3,7 +3,6 @@ const query = require('querystring');
 
 const htmlHandler = require('./htmlResponses.js');
 const responseHandler = require('./responses.js');
-const { url } = require('inspector');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
