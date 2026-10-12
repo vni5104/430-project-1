@@ -9,6 +9,7 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
     '/': htmlHandler.getIndex,
+    '/client.html': htmlHandler.getIndex,
     '/doc.html': htmlHandler.getDoc,
     '/style.css': htmlHandler.getCSS,
     '/getBook': responseHandler.getBook,
