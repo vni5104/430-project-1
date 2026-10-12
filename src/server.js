@@ -62,6 +62,10 @@ const onRequest = (request, response) => {
                 break;
             case '/reviewBook':
                 parseBody(request, response, responseHandler.reviewBook);
+                break;
+            default:
+                urlStruct.default(request, response);
+                break;
         }
     } else { //Assume GET by default
         if (handler) {
