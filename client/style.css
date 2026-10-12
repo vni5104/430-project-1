@@ -1,0 +1,21 @@
+body {
+    padding-top: 1rem;
+    background-color: #464c87;
+}
+
+h1 {
+    text-align: center;
+    font-size: 4rem;
+    color: #cacded;
+}
+
+.endpoint {
+    background-color: #e3ddd3;
+    padding: 0.8rem;
+    margin-top: 1rem;
+}
+
+.endpoint #content {
+    background-color: #f5f6fc;
+    padding: 0.8rem;
+}
