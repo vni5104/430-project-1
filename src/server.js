@@ -8,8 +8,13 @@ const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
     '/': htmlHandler.getIndex,
+    '/client.html': htmlHandler.getIndex,
+    '/doc.html': htmlHandler.getDoc,
+    '/style.css': htmlHandler.getCSS,
     '/getBook': responseHandler.getBook,
-    //'/getBooks': responseHandler.getBooks,
+    '/getBooks': responseHandler.getBooks,
+    '/getAllBooks': responseHandler.getAllBooks,
+    '/getAuthors': responseHandler.getAuthors,
     default: responseHandler.notFound
 };
 
@@ -51,10 +56,18 @@ const onRequest = (request, response) => {
     const handler = urlStruct[parsedUrl.pathname];
 
     if (request.method === 'POST') {
-        if (parsedUrl.pathname === '/addBook') {
-            parseBody(request, response, responseHandler.addBook);
+        switch (parsedUrl.pathname) {
+            case '/addBook':
+                parseBody(request, response, responseHandler.addBook);
+                break;
+            case '/reviewBook':
+                parseBody(request, response, responseHandler.reviewBook);
+                break;
+            default:
+                urlStruct.default(request, response);
+                break;
         }
-    } else {
+    } else { //Assume GET by default
         if (handler) {
             handler(request, response);
         } else {
@@ -66,4 +79,3 @@ const onRequest = (request, response) => {
 http.createServer(onRequest).listen(port, () => {
     console.log(`Listening on 127.0.0.1:${port}`);
 })
-//adding comment to make commit
