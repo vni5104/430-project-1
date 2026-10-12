@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1 Documentation</title>
+
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+    <h1>Books API Documentation</h1>
+    <!-- GET/HEAD Endpoints -->
+    <div class="endpoint">
+        <h2>Get Book</h2>
+        <p>Relative URL: /getBook</p>
+        <h3>Query Params</h3>
+        <p>title [type: text, required]</p>
+        <h3>Returns</h3>
+        <p>A JSON object (or JSON objects if there are more than one object with the same title)</p>
+        <p><b>Format</b> {author:"", country:"", language:"", link:"", pages:"", title:"", year:"", genres:[""]}</p>
+        <h3>Example</h3>
+        <p>
+            <b>Request:</b> /getBook?title=Fairy%20tales<br>
+            <b>Result:</b> {"author":"Hans Christian Andersen","country":"Denmark","language":"Danish",
+            "link":"https://en.wikipedia.org/wiki/Fairy_Tales_Told_for_Children._First_Collection.\n",
+            "pages":784,"title":"Fairy tales","year":1836,"genres":["Fairy Tales","Children's Literature"]}
+        </p>
+    </div>
+
+    <div class="endpoint">
+        <h2>Get Books</h2>
+        <p>Relative URL: /getBooks</p>
+        <h3>Query Params</h3>
+        <p>author [type: text, required if other param(s) is not provided]</p>
+        <p>genres [type: text, required if other param(s) is not provided]</p>
+        <h3>Returns</h3>
+        <p>A list of JSON objects</p>
+        <p><b>Format</b> {author:"", country:"", language:"", link:"", pages:"", title:"", year:"", genres:[""]}</p>
+        <h3>Example</h3>
+        <p>
+            <b>Request:</b> /getBooks?genre=Historical%20Fiction<br>
+            <b>Result:</b><br>
+            {"author":"Chinua Achebe","country":"Nigeria","language":"English","link":"https://en.wikipedia.org/wiki/Things_Fall_Apart\n",
+            "pages":209,"title":"Things Fall Apart","year":1958,"genres":["Historical Fiction","Postcolonial Literature"]}<br><br>
+            {"author":"Unknown","country":"Iceland","language":"Old Norse","link":"https://en.wikipedia.org/wiki/Nj%C3%A1ls_saga\n",
+            "pages":384,"title":"Njál's Saga","year":1350,"genres":["Epic Saga","Historical Fiction"]}<br><br>
+            {"author":"Giovanni Boccaccio","country":"Italy","language":"Italian","link":"https://en.wikipedia.org/wiki/The_Decameron\n",
+            "pages":1024,"title":"The Decameron","year":1351,"genres":["Classic Literature","Historical Fiction"]}<br><br>
+            {"author":"Alfred Döblin","country":"Germany","language":"German","link":"https://en.wikipedia.org/wiki/Berlin_Alexanderplatz\n",
+            "pages":600,"title":"Berlin Alexanderplatz","year":1929,"genres":["Historical Fiction","Modernism"]}<br><br>
+            {"author":"George Eliot","country":"United Kingdom","language":"English","link":"https://en.wikipedia.org/wiki/Middlemarch\n",
+            "pages":800,"title":"Middlemarch","year":1871,"genres":["Historical Fiction","Classic Literature"]}<br><br>
+            {"author":"Ralph Ellison","country":"United States","language":"English","link":"https://en.wikipedia.org/wiki/Invisible_Man\n",
+            "pages":581,"title":"Invisible Man","year":1952,"genres":["Historical Fiction","Race"]}<br><br>
+            {"author":"William Faulkner","country":"United States","language":"English","link":"https://en.wikipedia.org/wiki/Absalom,_Absalom!\n",
+            "pages":313,"title":"Absalom, Absalom!","year":1936,"genres":["Southern Gothic","Historical Fiction"]}<br><br>
+            {"author":"Kālidāsa","country":"India","language":"Sanskrit","link":"https://en.wikipedia.org/wiki/Abhij%C3%B1%C4%81na%C5%9B%C4%81kuntalam\n",
+            "pages":147,"title":"The recognition of Shakuntala","year":150,"genres":["Historical Fiction","Classical Literature"]}
+        </p>
+    </div>
+
+    <div class="endpoint">
+        <h2>Get All Books</h2>
+        <p>Relative URL: /getAllBooks</p>
+        <h3>Query Params</h3>
+        <p>(n/a)</p>
+        <h3>Returns</h3>
+        <p>A JSON list of the entire dataset</p>
+        <p><b>Format</b> {author:"", country:"", language:"", link:"", pages:"", title:"", year:"", genres:[""]}</p>
+    </div>
+
+    <div class="endpoint">
+        <h2>Get Authors</h2>
+        <p>Relative URL: /getAuthors</p>
+        <h3>Query Params</h3>
+        <p>country [type: text, required if other param(s) is not provided]</p>
+        <p>language [type: text, required if other param(s) is not provided]</p>
+        <h3>Returns</h3>
+        <p>A JSON object holding a list of author names (without duplicates)</p>
+        <p><b>Format</b> ["name1", "name2"]</p>
+        <h3>Example</h3>
+        <p>
+            <b>Request:</b> /getAuthors?country=United%20Kingdom<br>
+            <b>Result:</b> ["Jane Austen","Emily Brontë",
+            "Joseph Conrad","Charles Dickens","George Eliot","D. H. Lawrence","Doris Lessing",
+            "George Orwell","Virginia Woolf"]
+        </p>
+    </div>
+
+    <!-- POST Endpoints -->
+    <div class="endpoint">
+        <h2>Add Book</h2>
+        <p>Relative URL: /addBook</p>
+        <h3>Query Body</h3>
+        <p>author [type: text, required]</p>
+        <p>country [type: text, optional]</p>
+        <p>language [type: text, optional]</p>
+        <p>link [type: text, optional]</p>
+        <p>pages [type: number, optional]</p>
+        <p>title [type: text, required]</p>
+        <p>year [type: number, optional]</p>
+        <p>genres [type: text, optional]</p>
+        <h3>Returns</h3>
+        <p>Text with status code and message, and JSON book object if created (not updated)</p>
+        <p>
+            <b>Format:</b><br><br>
+            <b>Status Code</b><br>
+            (optional status message)<br>
+            {author:"", country:"", language:"", link:"", pages:"", title:"", year:"", genres:[""]}
+        </p>
+        <h3>Example Results</h3>
+        <p>
+            <b>Created</b><br>
+            Book successfully created<br>
+            {"author":"joe","country":"","language":"",
+            "link":"","pages":"","title":"title json","year":"2011","genres":[""]}
+        </p>
+        <p>
+            <b>Created</b><br>
+            Book successfully created<br>
+            {"author":"joe","country":"","language":"","link":"","pages":"","title":"title url",
+            "year":"2011","genres":""}
+        </p>
+    </div>
+
+    <div class="endpoint">
+        <h2>Review Book</h2>
+        <p>Relative URL: /reviewBook</p>
+        <h3>Query Body</h3>
+        <p>title [type: text, required]</p>
+        <p>author [type: text, required]</p>
+        <p>review [type: text, required]</p>
+        <h3>Returns</h3>
+        <p>Text with status code and message</p>
+        <p>
+            <b>Format:</b><br><br>
+            <b>Status Code</b><br>
+            (optional status message)
+        </p>
+        <h3>Example Results</h3>
+        <p><b>Resource Not Found</b><br>There is no book with corresponding title and author</p>
+        <p><b>Updated</b></p>
+    </div>
+</body>
+</html>

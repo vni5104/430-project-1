@@ -170,13 +170,14 @@ const addBook = (request, response) => {
         if (dataSet[i].title === newData.title && dataSet[i].author === newData.author) {
             dataSet[i] = newData;
 
-            return respond(request, response, 204, {});
+            return respond(request, response, 204, {book: newData});
         }
     }
 
     //Return 201 Created if book title and author didn't already exist
     dataSet.push(newData);
     responseJSON.message = 'Book successfully added';
+    responseJSON.book = newData;
     respond(request, response, 201, responseJSON);
 }
 
@@ -207,6 +208,7 @@ const reviewBook = (request, response) => {
         if (dataSet[i].title === title && dataSet[i].author === author) {
             dataSet[i].review = review;
             responseJSON.message = 'Book review successfully added';
+            responseJSON.book = {author: author, title: title, review: review};
             return respond(request, response, 204, responseJSON);
         }
     }

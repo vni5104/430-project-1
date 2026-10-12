@@ -3,18 +3,18 @@ const query = require('querystring');
 
 const htmlHandler = require('./htmlResponses.js');
 const responseHandler = require('./responses.js');
+const { url } = require('inspector');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
     '/': htmlHandler.getIndex,
+    '/doc.html': htmlHandler.getDoc,
     '/style.css': htmlHandler.getCSS,
     '/getBook': responseHandler.getBook,
     '/getBooks': responseHandler.getBooks,
     '/getAllBooks': responseHandler.getAllBooks,
     '/getAuthors': responseHandler.getAuthors,
-    '/addBook': responseHandler.addBook,
-    '/reviewBook': responseHandler.reviewBook,
     default: responseHandler.notFound
 };
 
@@ -55,14 +55,20 @@ const onRequest = (request, response) => {
 
     const handler = urlStruct[parsedUrl.pathname];
 
-    if (handler) {
-        if (request.method === 'POST') {
-            parseBody(request, response, handler);
-        } else { //assume GET by default
-            handler(request, response);
+    if (request.method === 'POST') {
+        switch (parsedUrl.pathname) {
+            case '/addBook':
+                parseBody(request, response, responseHandler.addBook);
+                break;
+            case '/reviewBook':
+                parseBody(request, response, responseHandler.reviewBook);
         }
-    } else {
-        urlStruct.default(request, response);
+    } else { //Assume GET by default
+        if (handler) {
+            handler(request, response);
+        } else {
+            urlStruct.default(request, response);
+        }
     }
 }
 

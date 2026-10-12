@@ -14,7 +14,7 @@
                     content.innerHTML = `<b>Created</b>`;
                     break;
                 case 204:
-                    content.innerHTML = `<b>Updated (No Content)</b>`;
+                    content.innerHTML = `<b>Updated</b>`;
                     break;
                 case 400:
                     content.innerHTML = `<b>Bad Request</b>`;
@@ -33,6 +33,10 @@
                 if (obj.message) {
                     content.innerHTML += `<p>${obj.message}</p>`;
                 }
+                if (obj.book) {
+                    content.innerHTML += `<p>${JSON.stringify(obj.book)}</p>`
+                }
+
                 if (obj.books) {
                     for (let i = 0; i < obj.books.length; i++) {
                         content.innerHTML += `<p>${JSON.stringify(obj.books[i])}</p>`;
@@ -235,6 +239,7 @@
 </head>
 <body>
     <h1>Books API</h1>
+    <a href="doc.html">See Documentation</a>
 
     <!-- GET/HEAD Endpoints -->
     <div class="endpoint">
